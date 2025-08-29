@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.5'              // ✔ 콘솔과 통일
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'garden_lamsay'
+version = '0.0.1-SNAPSHOT'
+description = 'GardenLamsay'
+
+java {
+	sourceCompatibility = '17'
+}
+
+
+// 빌드시 jar 파일 한개만 생성하기
+//jar {
+//	enabled = false
+//}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// === 핵심: REST + JPA + 검증 ===
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// 문서(Swagger UI)
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+	// 로컬 DB + postgres
+	runtimeOnly 'com.h2database:h2'
+	implementation 'org.postgresql:postgresql:42.7.2'
+
+
+	// 편의
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// 테스트
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
